@@ -395,7 +395,7 @@ class PdfFileWriter(object):
         self.cloneReaderDocumentRoot(reader)
         self.appendPagesFromReader(reader, after_page_append)
 
-    def encrypt(self, user_pwd, owner_pwd = None, use_128bit = True):
+    def encrypt(self, user_pwd, owner_pwd=None, use_128bit=True, user_perms=0):
         """
         Encrypt this PDF file with the PDF Standard encryption handler.
 
@@ -409,7 +409,7 @@ class PdfFileWriter(object):
             this flag is on.
         """
         import time, random
-        if owner_pwd == None:
+        if owner_pwd is None:
             owner_pwd = user_pwd
         if use_128bit:
             V = 2
@@ -420,7 +420,7 @@ class PdfFileWriter(object):
             rev = 2
             keylen = int(40 / 8)
         # permit everything:
-        P = -1
+        P = user_perms
         O = ByteStringObject(_alg33(owner_pwd, user_pwd, rev, keylen))
         ID_1 = ByteStringObject(md5(b_(repr(time.time()))).digest())
         ID_2 = ByteStringObject(md5(b_(repr(random.random()))).digest())
